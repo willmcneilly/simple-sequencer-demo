@@ -9,7 +9,7 @@ console.log(self);
 
 // Post data to parent thread
 //eslint-disable-next-line
-self.postMessage({ foo: 'foo' });
+// self.postMessage({ foo: 'foo' });
 
 // Respond to message from parent thread
 // eslint-disable-next-line
