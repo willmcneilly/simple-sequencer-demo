@@ -2,10 +2,23 @@ import React, { Component } from 'react';
 import Keyboard from './Keyboard';
 import Grid from './Grid';
 import { flatten, constant, times } from 'lodash';
-
+import metronome from '../Audio/metronome';
 
 class Sequencer extends Component {
-  notes = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B'];
+  notes = [
+    'C',
+    'C#/Db',
+    'D',
+    'D#/Eb',
+    'E',
+    'F',
+    'F#/Gb',
+    'G',
+    'G#/Ab',
+    'A',
+    'A#/Bb',
+    'B'
+  ];
 
   static defaultProps = {
     bars: 4,
@@ -14,8 +27,8 @@ class Sequencer extends Component {
     rowHeight: 18,
     registers: 6,
     segmentSize: 60,
-    keyWidth: 60,
-  }
+    keyWidth: 60
+  };
 
   constructor(props) {
     super(props);
@@ -24,12 +37,13 @@ class Sequencer extends Component {
 
   state = {
     gridWidth: 0
-  }
+  };
 
   componentDidMount() {
+    // metronome();
     this.setState({
       gridWidth: this.wrapper.current.offsetWidth - this.props.keyWidth
-    })
+    });
   }
 
   keys() {
@@ -41,7 +55,15 @@ class Sequencer extends Component {
 
     return (
       <div>
-        <div style={{height: '600px', overflow: 'scroll', display: 'flex', flexDirection: 'row'}} ref={this.wrapper}>
+        <div
+          style={{
+            height: '600px',
+            overflow: 'scroll',
+            display: 'flex',
+            flexDirection: 'row'
+          }}
+          ref={this.wrapper}
+        >
           <Keyboard {...this.props} keys={keys} />
           <Grid {...this.props} keys={keys} gridWidth={this.state.gridWidth} />
         </div>

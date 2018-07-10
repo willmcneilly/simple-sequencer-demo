@@ -1,5 +1,3 @@
-
-
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 const webpack = require('webpack');
@@ -187,7 +185,7 @@ module.exports = {
           },
           {
             test: /\.worker\.js$/,
-            use: { loader: 'worker-loader' }
+            use: { loader: 'worker-loader', options: { inline: true } }
           },
           // "file" loader makes sure those assets get served by WebpackDevServer.
           // When you `import` an asset, you get its (virtual) filename.
