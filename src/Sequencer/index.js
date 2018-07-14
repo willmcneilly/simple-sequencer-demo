@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Keyboard from './Keyboard';
 import Grid from './Grid';
 import { flatten, constant, times } from 'lodash';
-import metronome from '../Audio/metronome';
+import Metronome from '../Audio/Metronome';
 
 class Sequencer extends Component {
   notes = [
@@ -36,11 +36,12 @@ class Sequencer extends Component {
   }
 
   state = {
-    gridWidth: 0
+    gridWidth: 0,
+    metOn: false
   };
 
   componentDidMount() {
-    // metronome();
+    this.met = new Metronome();
     this.setState({
       gridWidth: this.wrapper.current.offsetWidth - this.props.keyWidth
     });
@@ -50,11 +51,31 @@ class Sequencer extends Component {
     return flatten(times(this.props.registers, constant(this.notes)));
   }
 
+  toggleMet = () => {
+    if (!this.met) {
+      return;
+    }
+    const { metOn } = this.state;
+    if (metOn) {
+      this.setState({ metOn: false }, () => {
+        this.met.play();
+      });
+    } else {
+      this.setState({ metOn: true }, () => {
+        this.met.play();
+      });
+    }
+  };
+
   render() {
     const keys = this.keys();
 
     return (
       <div>
+        <span>Metronome:</span>
+        <button onClick={this.toggleMet}>
+          {this.state.metOn ? 'OFF' : 'ON'}
+        </button>
         <div
           style={{
             height: '600px',
