@@ -3,6 +3,7 @@ import Keyboard from './Keyboard';
 import Grid from './Grid';
 import { flatten, constant, times } from 'lodash';
 import Metronome from '../Audio/Metronome';
+import Score from '../Audio/Score';
 
 class Sequencer extends Component {
   notes = [
@@ -42,6 +43,26 @@ class Sequencer extends Component {
 
   componentDidMount() {
     this.met = new Metronome();
+
+    const myScore = new Score()
+      .addNote('quarter', 'C-4')
+      .addRest('quarter')
+      .addNote('quarter', 'D-4')
+      .addRest('quarter')
+      .addNote('quarter', 'E-4')
+      .addRest('quarter')
+      .addNote('quarter', 'F-4')
+      .addRest('quarter')
+      .addNote('quarter', 'G-4')
+      .addRest('quarter')
+      .addNote('quarter', 'A-4')
+      .addRest('quarter')
+      .addNote('quarter', 'B-4')
+      .addRest('quarter')
+      .getScore();
+
+    console.log(myScore);
+
     this.setState({
       gridWidth: this.wrapper.current.offsetWidth - this.props.keyWidth
     });
