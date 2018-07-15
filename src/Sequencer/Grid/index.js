@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { fill } from 'lodash';
 
 const GridWrapper = styled.div`
-  height: ${({height}) => `${height}px`}};
-  width: ${({width}) => `${width}px`}};
+  height: ${({ height }) => `${height}px`}};
+  width: ${({ width }) => `${width}px`}};
   display: flex;
   flex-direction: column-reverse;
   overflow-x: scroll;
-`
+`;
 
 const Row = styled.div`
-  height: ${({rowHeight}) => `${rowHeight}px`}};
-  width: ${({rowWidth}) => `${rowWidth}px`}};
+  height: ${({ rowHeight }) => `${rowHeight}px`}};
+  width: ${({ rowWidth }) => `${rowWidth}px`}};
   display: flex;
 `;
 
@@ -27,7 +27,7 @@ const WhiteRow = Row.extend`
 
 const Segment = styled.div`
   box-sizing: border-box;
-  width: ${({segWidth}) => `${segWidth}px`}}
+  width: ${({ segWidth }) => `${segWidth}px`}}
   border-left: 1px solid #ddd;
   border-right: 0;
 `;
@@ -48,38 +48,39 @@ const BarWrapper = styled.div`
   flex-direction: row;
 `;
 
-class Bar extends Component {
+class Bar extends PureComponent {
   renderSegments() {
     const { meterFraction, segmentSize } = this.props;
 
     return fill(Array(meterFraction), null).map((_, i, arr) => {
       const key = i;
-      if(i === 0) {
-        return <SegmentFirst segWidth={segmentSize} key={key} />
+      if (i === 0) {
+        return <SegmentFirst segWidth={segmentSize} key={key} />;
       } else if (i === arr.length - 1) {
-        return <SegmentLast segWidth={segmentSize} key={key} />
+        return <SegmentLast segWidth={segmentSize} key={key} />;
       } else {
-        return <Segment segWidth={segmentSize} key={key} />
+        return <Segment segWidth={segmentSize} key={key} />;
       }
     });
   }
 
   render() {
-    const { segmentSize, meterFraction } = this.props;
-    return (
-      <BarWrapper>
-        {this.renderSegments()}
-      </BarWrapper>
-    );
+    return <BarWrapper>{this.renderSegments()}</BarWrapper>;
   }
 }
 
-class Grid extends Component {
+class Grid extends PureComponent {
   renderBars(register) {
-    const { rowHeight, bars, meterFraction, segmentSize } = this.props;
+    const { bars, meterFraction, segmentSize } = this.props;
     return fill(Array(bars)).map((_, i) => {
-      return <Bar meterFraction={meterFraction} segmentSize={segmentSize} key={`bar-${i}-${register}`}/>
-    })
+      return (
+        <Bar
+          meterFraction={meterFraction}
+          segmentSize={segmentSize}
+          key={`bar-${i}-${register}`}
+        />
+      );
+    });
   }
 
   renderRows() {
@@ -87,41 +88,38 @@ class Grid extends Component {
     const rowWidth = bars * meterFraction * segmentSize;
     return this.props.keys.map((key, i) => {
       const register = Math.floor(i / 12);
-      return key.includes('/') ?
-        (
-          <BlackRow
-            key={`${key}-${register}`}
-            note={key}
-            register={register}
-            rowHeight={rowHeight}
-            rowWidth={rowWidth}
-          >
-            {this.renderBars(register)}
-          </BlackRow>
-        ) : (
-          <WhiteRow
-            key={`${key}-${register}`}
-            note={key}
-            register={register}
-            rowHeight={rowHeight}
-            rowWidth={rowWidth}
-          >
-            {this.renderBars(register)}
-          </WhiteRow>
-        );
+      return key.includes('/') ? (
+        <BlackRow
+          key={`${key}-${register}`}
+          note={key}
+          register={register}
+          rowHeight={rowHeight}
+          rowWidth={rowWidth}
+        >
+          {this.renderBars(register)}
+        </BlackRow>
+      ) : (
+        <WhiteRow
+          key={`${key}-${register}`}
+          note={key}
+          register={register}
+          rowHeight={rowHeight}
+          rowWidth={rowWidth}
+        >
+          {this.renderBars(register)}
+        </WhiteRow>
+      );
     });
   }
 
   render() {
-    const { registers, gridWidth, rowHeight} = this.props;
+    const { registers, gridWidth, rowHeight } = this.props;
     return (
-      <GridWrapper height={registers * 12 * rowHeight} width={gridWidth} >
+      <GridWrapper height={registers * 12 * rowHeight} width={gridWidth}>
         {this.renderRows()}
       </GridWrapper>
     );
   }
 }
-
-
 
 export default Grid;

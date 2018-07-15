@@ -76,16 +76,14 @@ class Sequencer extends Component {
     if (!this.met) {
       return;
     }
+
     const { metOn } = this.state;
     if (metOn) {
-      this.setState({ metOn: false }, () => {
-        this.met.play();
-      });
+      this.setState({ metOn: false });
     } else {
-      this.setState({ metOn: true }, () => {
-        this.met.play();
-      });
+      this.setState({ metOn: true });
     }
+    setImmediate(this.met.play.bind(this.met));
   };
 
   render() {
