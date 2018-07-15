@@ -67,7 +67,7 @@ export class Score {
     const halfSteps =
       register * 12 + notes[note] - (baseRegister * 12 + notes['A']);
 
-    return (baseFreq * Math.pow(Math.pow(2, 1 / 12), halfSteps)).toFixed(2);
+    return baseFreq * Math.pow(Math.pow(2, 1 / 12), halfSteps);
   }
 
   lastNote() {
@@ -119,6 +119,10 @@ export class Score {
 
   getScore() {
     return this._scoreQueue;
+  }
+
+  getNotes() {
+    return this._scoreQueue.filter(item => item.type === 'note');
   }
 }
 
