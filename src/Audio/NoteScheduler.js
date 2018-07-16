@@ -12,7 +12,7 @@ class NoteScheduler {
     this.clock.setTimeInterval(25);
     this.current16thNote = 0;
     this.nextNoteTime = 0.0;
-    this.scheduleAheadTime = 0.2;
+    this.scheduleAheadTime = 0.05;
     this.loopNumber = 0;
     this.loop = true;
     this.beginning = null;
@@ -31,18 +31,17 @@ class NoteScheduler {
   };
 
   scheduleNote(note) {
-    console.log({ note });
     const osc = this.ctx.createOscillator();
+    const gainNode = this.ctx.createGain();
     const absoluteStartTime = note.relativeStartTime + this.playBegan;
     const absoluteEndTime = absoluteStartTime + note.lengthInSeconds;
     osc.frequency.value = note.frequency;
-    console.log({
-      noteLength: absoluteEndTime - absoluteStartTime,
-      note: note.name
-    });
-    osc.connect(this.ctx.destination);
+    osc.connect(gainNode);
     osc.start(absoluteStartTime);
-    osc.stop(absoluteEndTime);
+    osc.stop(absoluteEndTime + 0.05);
+    gainNode.gain.setValueAtTime(gainNode.gain.value, absoluteEndTime - 0.03);
+    gainNode.gain.exponentialRampToValueAtTime(0.00001, absoluteEndTime + 0.03);
+    gainNode.connect(this.ctx.destination);
   }
 
   nextNote() {
